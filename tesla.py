@@ -1,6 +1,7 @@
-from object import Object
+from falling import Falling
 
 
-class Tesla(Object):
+class Tesla(Falling):
     def __init__(self):
-        super().__init__(texture_filename='tesla.png')
+        super().__init__('textures/tesla.png', sizeX=50, sizeY=50)
+        self.speedY = 2

@@ -1,27 +1,34 @@
-import random
 import pygame
-
-from settings import *
 
 
 class Object:
-    def __init__(self, texture_filename):
-        self.x = random.randrange(0, SCREEN_WIDTH - ASTEROID_WIDTH)
-        self.y = -ASTEROID_HEIGHT - random.randrange(600)
-        self.speed = 2
+    def __init__(self, texture_filename, x=0, y=0, sizeX=100, sizeY=100):
+        self.x = x
+        self.y = y
+        self.speedX = 0
+        self.speedY = 0
+        self.sizeX = sizeX
+        self.sizeY = sizeY
         self.texture = pygame.image.load(texture_filename).convert_alpha()
-        self.texture = pygame.transform.scale(self.texture, (ASTEROID_WIDTH, ASTEROID_HEIGHT))
+        self.texture = pygame.transform.scale(self.texture, (sizeX, sizeY))
 
-    def move(self):
-        self.y += self.speed
+    def update(self):
+        self.x += self.speedX
+        self.y += self.speedY
 
-    def reset(self):
-        self.y = -ASTEROID_HEIGHT
-        self.x = random.randrange(0, SCREEN_WIDTH - ASTEROID_WIDTH)
+    def set_position(self, x, y):
+        self.x = x
+        self.y = y
+
+    def size(self):
+        return self.sizeX, self.sizeY
+
+    def pos(self):
+        return self.x, self.y
 
     def draw(self, screen):
-        screen.blit(self.texture, (self.x, self.y))  # draw the asteroid texture
+        screen.blit(self.texture, (self.x, self.y))
 
-    def collides_with(self, ship_x, ship_y):
-        return (self.y + ASTEROID_HEIGHT > ship_y) and (self.x < ship_x + SHIP_WIDTH) and (
-                self.x + ASTEROID_WIDTH > ship_x)
+    def collides_with(self, object):
+        return (self.x + self.sizeX > object.x) and (object.x + object.sizeX > self.x) and \
+            (self.y + self.sizeY > object.y) and (object.y + object.sizeY > self.y)
