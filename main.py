@@ -1,3 +1,5 @@
+from time import perf_counter
+
 import pygame
 import sys
 
@@ -19,7 +21,7 @@ def game():
     """
 
     score = 0
-    score_font = pygame.font.SysFont(None, 25)
+    font = pygame.font.SysFont(None, 25)
 
     asteroids = [Asteroid() for _ in range(ASTEROID_NUMBER)]
     teslas = [Tesla() for _ in range(TESLA_NUMBER)]
@@ -27,8 +29,12 @@ def game():
     frame_counter = 0
 
     ship = Ship()
+    distance_to_mars = 257 * 10 ** 6
+    t = perf_counter()
 
     while not game_over:
+        distance_to_mars -= 12 * (perf_counter() - t)
+        t = perf_counter()
         frame_counter += 1
 
         for event in pygame.event.get():
@@ -40,9 +46,12 @@ def game():
 
         screen.fill(BG_COLOR)
 
-        # Score display
-        score_display = score_font.render('Score: ' + str(score), True, (255, 255, 255))
+        score_display = font.render('Score: ' + str(score), True, (255, 255, 255))
         screen.blit(score_display, (20, 20))
+
+        distance_display = font.render('Distance to Mars: ' + str(int(distance_to_mars)) + ' km', True,
+                                       (255, 255, 255))
+        screen.blit(distance_display, (20, 50))
 
         ship.update()
         ship.draw(screen)

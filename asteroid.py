@@ -1,8 +1,11 @@
+from random import randrange
+
 from falling import Falling
 from settings import *
 
 
 class Asteroid(Falling):
     def __init__(self):
-        super().__init__("textures/asteroid.png", sizeX=ASTEROID_WIDTH, sizeY=ASTEROID_HEIGHT)
+        size = randrange(20, 70)
+        super().__init__(f"textures/asteroid{randrange(3)}.png", sizeX=size, sizeY=size)
         self.speedY = 2
