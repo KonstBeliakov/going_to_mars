@@ -3,10 +3,12 @@ from time import perf_counter
 import pygame
 import sys
 
+import settings
 from asteroid import Asteroid
 from settings import *
 from ship import Ship
 from tesla import Tesla
+from speed_boost import SpeedBoost
 
 pygame.init()
 
@@ -25,6 +27,7 @@ def game():
 
     asteroids = [Asteroid() for _ in range(ASTEROID_NUMBER)]
     teslas = [Tesla() for _ in range(TESLA_NUMBER)]
+    speed_boosts = [SpeedBoost() for _ in range(SPEED_BOOST_NUMBER)]
     game_over = False
     frame_counter = 0
 
@@ -33,7 +36,7 @@ def game():
     t = perf_counter()
 
     while not game_over:
-        distance_to_mars -= 12 * (perf_counter() - t)
+        distance_to_mars -= ship.speed * (perf_counter() - t)
         t = perf_counter()
         frame_counter += 1
 
@@ -53,8 +56,19 @@ def game():
                                        (255, 255, 255))
         screen.blit(distance_display, (20, 50))
 
+        speed_display = font.render(f'Ship speed: {int(ship.speed)} km/s', True, (255, 255, 255))
+        screen.blit(speed_display, (20, 80))
+
         ship.update()
         ship.draw(screen)
+
+        for speed_boost in speed_boosts:
+            speed_boost.update()
+            speed_boost.draw(screen)
+            if ship.collides_with(speed_boost):
+                settings.FALLING_SPEED += 1
+                ship.speed *= 1.5
+                speed_boost.reset()
 
         for tesla in teslas:
             tesla.update()

@@ -1,5 +1,6 @@
 from random import randrange
 
+import settings
 from object import Object
 from settings import *
 
@@ -15,5 +16,6 @@ class Falling(Object):
 
     def update(self):
         super().update()
+        self.speedY = settings.FALLING_SPEED
         if self.y > SCREEN_HEIGHT:
             self.reset()

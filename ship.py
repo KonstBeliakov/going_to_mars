@@ -8,7 +8,8 @@ class Ship(Object):
     def __init__(self):
         super().__init__('textures/mask_default.png')
 
-        self.speed = 20
+        self.turning_speed = 20
+        self.speed = 11.3
 
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT - 100
@@ -36,6 +37,6 @@ class Ship(Object):
 
     def control(self, event):
         if event.key == pygame.K_LEFT:
-            self.x -= self.speed
+            self.x -= self.turning_speed
         if event.key == pygame.K_RIGHT:
-            self.x += self.speed
+            self.x += self.turning_speed

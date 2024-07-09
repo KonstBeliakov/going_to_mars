@@ -1,7 +1,6 @@
 from random import randrange
 
 from falling import Falling
-from settings import *
 
 
 class Asteroid(Falling):
